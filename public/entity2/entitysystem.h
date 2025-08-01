@@ -369,6 +369,7 @@ public:
 	int m_iNetworkedEntCount;
 	int m_iNonNetworkedSavedEntCount;
 	CUtlDict<SpawnGroupEntityFilterInfo_t> m_spawnGroupEntityFilters;
+	uint8 unknown[0x8];
 	CUtlVector<IEntityListener*> m_entityListeners;
 	IEntity2SaveRestore* m_pEntity2SaveRestore;
 	IEntity2Networkables* m_pEntity2Networkables;
