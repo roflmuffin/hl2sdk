@@ -50,9 +50,6 @@ public:
 
 	FnGlobalVarsWarningFunc m_pfnWarningFunc;
 
-	// Time spent on last server or client frame (has nothing to do with think intervals)
-	float frametime;
-
 	// Current time 
 	//
 	// On the client, this (along with tickcount) takes a different meaning based on what
@@ -69,6 +66,7 @@ public:
 	//   - During prediction, this is based on the client's current tick:
 	//     [client_current_tick * tick_interval]
 	float curtime;
+	float rendertime;
 
 	// zer0k: Command queue + interpolation related 
 	float unknown6;
@@ -92,4 +90,5 @@ inline CGlobalVarsBase::CGlobalVarsBase()
 }
 
 #endif // GLOBALVARS_BASE_H
+
 
