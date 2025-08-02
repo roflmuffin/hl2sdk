@@ -161,7 +161,7 @@ protected:
 	ListElem_t const& InternalElement( I i ) const { return m_Memory[i]; }
 
 	// copy constructors not allowed
-	CUtlLinkedList( CUtlLinkedList<T, S, ML, I, M> const& list ) : m_LastAlloc( 0 ) { Assert(0); }
+	CUtlLinkedList( CUtlLinkedList<T, S, ML, I, M> const& list ) : m_LastAlloc( m_Memory.InvalidIterator() ) { Assert(0); }
 
 	M	m_Memory;
 	I	m_Head;
@@ -422,29 +422,12 @@ I CUtlLinkedList<T,S,ML,I,M>::AllocInternal( bool multilist )
 	{
 		Assert( m_Memory.IsValidIterator( m_LastAlloc ) || m_ElementCount == 0 );
 
-		m_Memory.AddToTailGetPtr();
-
-		typename M::Iterator_t it = m_Memory.IsValidIterator( m_LastAlloc ) ? m_Memory.Next( m_LastAlloc ) : m_Memory.First();
-
-		if ( !m_Memory.IsValidIterator( it ) )
-		{
-			MEM_ALLOC_CREDIT_CLASS();
-			m_Memory.AddToTailGetPtr();
-
-			it = m_Memory.IsValidIterator( m_LastAlloc ) ? m_Memory.Next( m_LastAlloc ) : m_Memory.First();
-
-			Assert( m_Memory.IsValidIterator( it ) );
-			if ( !m_Memory.IsValidIterator( it ) )
-			{
-				ExecuteNTimes( 10, Warning( "CUtlLinkedList overflow! (exhausted memory allocator)\n" ) );
-				return InvalidIndex();
-			}
-		}
+		typename M::Iterator_t it = m_Memory.AddToTail();
 
 		// We can overflow before the utlmemory overflows, since S != I
 		if ( !IndexInRange( m_Memory.GetIndex( it ) ) )
 		{
-			ExecuteNTimes( 10, Warning( "CUtlLinkedList overflow! (exhausted index range)\n" ) );
+			Plat_FatalError( "CUtlLinkedList overflow! (exhausted index range)\n" );
 			return InvalidIndex();
 		}
 
