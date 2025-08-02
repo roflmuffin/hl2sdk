@@ -48,6 +48,8 @@ public:
 private:
 	char unk001[24];
 	float m_flMargin;
+	char padding[4];
+	char unk002[8];
 };
 
 // AMNOTE: This is a stub class over real CNetMessagePB!
